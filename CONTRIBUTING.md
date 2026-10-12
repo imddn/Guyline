@@ -52,7 +52,8 @@ Report exact commands, environment and error output without credentials.
 [SHOWCASE](docs/SHOWCASE.md) accepts small reproducible examples.
 Bundled and local skills should use Guyline modules, commands and paths.
 Preserve genuine third-party provenance and licenses, including
-`src/guyline/channels/UPSTREAM`. Do not rewrite user data for branding cleanup.
+`src/guyline/channels/UPSTREAM`. Do not rewrite user data as part of repository
+maintenance.
 
 Update user-facing docs when commands, configuration or path contracts change:
 keep `README.md` and `README.zh-CN.md` aligned, note new examples in

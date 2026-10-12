@@ -14,7 +14,7 @@ directories and variables are not read or copied. Explicit paths do not import u
 default trees. Coding and personal memory remain separate. Credentials are
 denied in every permission mode, including linked paths and custom roots.
 
-Dashboard snapshots contain consistent sample paths. Old identity assets and
-obsolete root license metadata have been removed; genuine third-party provenance
-and licenses are retained. Native Windows path coverage targets Windows Python
-3.10/3.11 in CI; Linux tests alone do not establish native Windows acceptance.
+Dashboard snapshots contain consistent sample paths. Product assets are included
+consistently across the package, and genuine third-party provenance and licenses
+are retained. Native Windows path coverage targets Windows Python 3.10/3.11 in
+CI; Linux tests alone do not establish native Windows acceptance.

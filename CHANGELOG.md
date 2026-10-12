@@ -1,6 +1,6 @@
 # Changelog
 
-Guyline 0.2.0 migrates the application, command tree and storage locations.
+Guyline 0.2.0 updates the application, command tree and storage locations.
 
 All notable changes should be recorded in this file.
 
@@ -32,8 +32,7 @@ The format is based on Keep a Changelog, and this project currently tracks chang
 
 - Use `guyline`, `guyline agent`, and `guyline gateway` with a single launcher.
 - Install from a local source checkout or wheel, including locked terminal resources.
-- Use GUYLINE variables and `.guyline` directories only; no legacy directories or
-  variables are read.
+- Configuration and runtime data use GUYLINE variables and `.guyline` directories.
 - Keep explicit Agent workspaces independent of the default workspace, propagate
   child paths consistently, and refuse credential reads across permission modes.
 - Use GUYLINEJSON terminal messages and wait for backend readiness in scripted input.
