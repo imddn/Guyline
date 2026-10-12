@@ -17,7 +17,8 @@ uv run python -m guyline --version
 
 `bash scripts/install_dev.sh` installs this checkout into its `.guyline-venv`.
 Use `--global-venv` for the home-directory venv; `--source` and `--wheel`
-select explicit local installation targets. See [README](README.md).
+select explicit local installation targets. See [README](README.md) (Chinese) or
+[README.en.md](README.en.md) (English).
 
 ## Validation
 
@@ -56,7 +57,8 @@ Preserve genuine third-party provenance and licenses, including
 maintenance.
 
 Update user-facing docs when commands, configuration or path contracts change:
-keep `README.md` and `README.zh-CN.md` aligned, note new examples in
+keep `README.md` (Chinese), `README.en.md` (English) and the
+[architecture documents](docs/ARCHITECTURE.md) aligned, note new examples in
 [SHOWCASE](docs/SHOWCASE.md), and add a short user-visible entry to
 [CHANGELOG](CHANGELOG.md). Do not describe behavior you have not verified.
 

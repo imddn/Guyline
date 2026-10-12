@@ -3,6 +3,9 @@
 Small examples for Guyline 0.2.0, using the commands installed from this checkout
 or a local wheel. Configure a provider before examples that call a model.
 
+See also the [architecture document](ARCHITECTURE.md) ([English](ARCHITECTURE.en.md))
+and the [README](../README.en.md) for installation and configuration.
+
 ## 0. Credential-free checks (no provider needed)
 
 These run before any provider is configured and never call a model:

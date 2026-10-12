@@ -27,6 +27,11 @@ The format is based on Keep a Changelog, and this project currently tracks chang
 - Security documentation: add `SECURITY.md`, and make the autopilot
   `scan`/`run-next` workflows manual-only (`workflow_dispatch`) on the
   self-hosted runner.
+- Restructure the public documentation: the default `README.md` is now the Chinese
+  homepage, `README.en.md` holds the full English homepage, `README.zh-CN.md` is a
+  short redirect, and `docs/ARCHITECTURE.md` / `docs/ARCHITECTURE.en.md` document the
+  execution loop, multi-agent layer, context and memory, permissions and sandboxing,
+  and extension mechanisms with source and test entry points.
 
 ## [0.2.0] - 2026-10-09
 
