@@ -1,0 +1,7 @@
+repo: https://github.com/nanobot-ai/nanobot
+commit: 473ae5ef18394ab839a3364eee66836ef9776902
+synced: 2026-04-05T00:00:00Z
+license: MIT (see LICENSE.nanobot in this directory)
+paths:
+  nanobot/bus/     -> src/guyline/channels/bus/
+  nanobot/channels/ -> src/guyline/channels/impl/

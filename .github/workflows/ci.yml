@@ -1,0 +1,177 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  windows-native:
+    name: Native Windows paths and CLI (${{ matrix.python-version }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --extra dev
+      - name: Native Windows path, workspace and install regressions
+        run: uv run pytest -q tests/test_config/test_paths.py tests/test_agent/test_workspace.py tests/test_install/test_windows_alias.py
+      - name: Native Windows CLI smoke
+        run: |
+          uv run python -m guyline --version
+          uv run python -m guyline --dry-run -p "/help"
+      - name: Parse PowerShell installer
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$pwd/scripts/install.ps1", [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | Format-List; exit 1 }
+  python-tests:
+    name: Python tests (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.10"
+          - "3.11"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Run test suite
+        run: uv run pytest -q
+
+  python-quality:
+    name: Python quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Ruff
+        run: uv run ruff check src tests scripts
+
+  frontend-typecheck:
+    name: Frontend typecheck
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend/terminal
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/terminal/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npm run typecheck
+      - name: Frontend behavior tests
+        run: npm test
+
+  dashboard-build:
+    name: Autopilot dashboard build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: autopilot-dashboard
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: autopilot-dashboard/package-lock.json
+
+      - name: Install dashboard dependencies
+        run: npm ci
+
+      - name: Build dashboard
+        run: npm run build
+
+  distribution-smoke:
+    name: Distribution smoke
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Build wheel and sdist
+        run: uv build --out-dir dist
+
+      - name: Verify wheel ships licenses and bundled frontend
+        run: |
+          wheel=$(ls dist/*.whl)
+          unzip -l "$wheel" | grep -q "dist-info/licenses/LICENSE"
+          unzip -l "$wheel" | grep -q "dist-info/licenses/src/guyline/channels/LICENSE.nanobot"
+          unzip -l "$wheel" | grep -q "guyline/_frontend/package.json"
+          unzip -l "$wheel" | grep -q "guyline/_frontend/package-lock.json"
+          unzip -l "$wheel" | grep -q "guyline/_frontend/src/index.tsx"
+
+      - name: Install wheel in an isolated venv and smoke-test the CLI
+        env:
+          GUYLINE_CONFIG_DIR: ${{ runner.temp }}/guyline-smoke/config
+          GUYLINE_DATA_DIR: ${{ runner.temp }}/guyline-smoke/data
+          GUYLINE_LOGS_DIR: ${{ runner.temp }}/guyline-smoke/logs
+        run: |
+          uv venv "${{ runner.temp }}/guyline-smoke-venv" --python 3.11
+          uv pip install --python "${{ runner.temp }}/guyline-smoke-venv/bin/python" dist/*.whl
+          smoke_python="${{ runner.temp }}/guyline-smoke-venv/bin/python"
+          "$smoke_python" -m guyline --version
+          "$smoke_python" -m guyline --help
+          "$smoke_python" -m guyline --dry-run -p "/help"
+          "$smoke_python" -m guyline provider list
+          "$smoke_python" -m guyline auth status

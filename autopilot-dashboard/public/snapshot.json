@@ -1,0 +1,59 @@
+{
+  "generated_at": 1776338766.0050209,
+  "repo_name": "guyline-example",
+  "repo_path": "/workspace/guyline-example",
+  "focus": null,
+  "counts": {
+    "queued": 0,
+    "accepted": 0,
+    "preparing": 0,
+    "running": 0,
+    "verifying": 0,
+    "pr_open": 0,
+    "waiting_ci": 0,
+    "repairing": 0,
+    "completed": 0,
+    "merged": 0,
+    "failed": 0,
+    "rejected": 0,
+    "superseded": 0
+  },
+  "status_order": [
+    "queued",
+    "accepted",
+    "preparing",
+    "running",
+    "verifying",
+    "pr_open",
+    "waiting_ci",
+    "repairing",
+    "completed",
+    "merged",
+    "failed",
+    "rejected",
+    "superseded"
+  ],
+  "columns": {
+    "queued": [],
+    "accepted": [],
+    "preparing": [],
+    "running": [],
+    "verifying": [],
+    "pr_open": [],
+    "waiting_ci": [],
+    "repairing": [],
+    "completed": [],
+    "merged": [],
+    "failed": [],
+    "rejected": [],
+    "superseded": []
+  },
+  "cards": [],
+  "journal": [],
+  "policies": {
+    "autopilot": "/workspace/guyline-example/.guyline/autopilot/autopilot_policy.yaml",
+    "verification": "/workspace/guyline-example/.guyline/autopilot/verification_policy.yaml",
+    "release": "/workspace/guyline-example/.guyline/autopilot/release_policy.yaml"
+  },
+  "active_context": "# Active Repo Context\n\nExample workspace: /workspace/guyline-example\n\nNo active task, queued items or journal entries.\n\n## Policies\n- autopilot: /workspace/guyline-example/.guyline/autopilot/autopilot_policy.yaml\n- verification: /workspace/guyline-example/.guyline/autopilot/verification_policy.yaml\n- release: /workspace/guyline-example/.guyline/autopilot/release_policy.yaml\n"
+}
